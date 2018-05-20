@@ -48,33 +48,30 @@ class MenuItem(object):
 			self.printsize = 4+len(str(self.chosen))
 		if((len(self.title)+4)>self.printsize):
 			self.printsize = (len(self.title)+4)
+		self.outerprintsize = 0
 			
 	#def changeValue(newValue):
 		#ERROR check: if itemType == 1 then newValue should be a number bigger than 0 but no larger than length of options
 		#ERROR check: if itemType == 2 then newValue should be a number between the two numbers in options
 		#ERROR check: if itemType == 3 then newValue should be a string
 	
-	def printTypes(self):
-		print()
-		print(self.title)
-		print(type(self.title))
-		print("This menu item is a ", self.itemType.name)
-		print("options: ", self.options)
-		print("propertyValue: ", self.chosen)
-		print(type(self.chosen))
-		print("size needed for printing ", self.printsize)
-	
 	def printMenuItem(self):
 		if(self.itemType.value == 1):
+			f_title = self.title.center(self.printsize)
 			print()
-			print('|',self.title.center(self.printsize),'|',sep='')
-			print('|',end='')
+			print('|',f_title.center(self.outerprintsize),'|',sep='')
+			
+			f_options1 = ''
+			f_options2 = ''
+			mylist2 = [ ('('+self.options[i]+')').center(4+len(self.options[i])) if i==self.chosen else self.options[i].center(4+len(self.options[i])) for i in range(len(self.options))]
+			f_options2.join(mylist2)
 			for i in range(len(self.options)):
 				if(i==self.chosen):
-					print(('('+self.options[i]+')').center(4+len(self.options[i])),end='')
+					f_options1= f_options1 + ('('+self.options[i]+')').center(4+len(self.options[i]))
 				else:
-					print(self.options[i].center(4+len(self.options[i])),end='')
-			print('|')
+					f_options1= f_options1 + self.options[i].center(4+len(self.options[i]))
+			print('|', f_options1, '|',sep='')
+			print('|', f_options2, '|',sep='')
 
 """
 	class MenuItemType(enum.Enum):
@@ -94,12 +91,8 @@ property_1_chosen = 0;
 myBorderColor = MenuItem(property_1_title, property_1_chosen, 1, property_1_values);
 print(myBorderColor.itemType.value)
 print(myBorderColor.itemType.name)
-myBorderColor.printTypes()
 myBorderColor.printMenuItem()
 
 property_2_title = "border color";
 property_2_values = [];
 property_2_chosen = "James";
-
-myCharacterName = MenuItem(property_2_title, property_2_chosen, 3, property_2_values);
-myCharacterName.printTypes()
