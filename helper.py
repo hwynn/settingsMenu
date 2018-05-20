@@ -16,26 +16,6 @@ newfile2 = open('test2.txt','w');
 newfile2.write('this another file.\n777-632-0425');
 newfile2.close();"""
 
-class Menu(object):
-	def __init__(self):
-		self.width = 0;
-		self.items = [];
-
-	def addItem(self, pTitle, pValue, iType, pOptions=[]):
-		f_menuItem = MenuItem(pTitle, pValue, iType, pOptions)
-		if(f_menuItem.outerprintsize < self.width):
-			f_menuItem.outerprintsize = self.width		#adjusting padding on the smaller new menu item
-		elif(f_menuItem.outerprintsize > self.width):
-			self.width = f_menuItem.outerprintsize
-			for(x in Menu.items):						#adjusting padding on all past menu items to fit this new big item
-				Menu.items.outerprintsize = self.width
-		self.items.append(f_menuItem)
-		#deep copy lists if needed
-	
-	def printMenu(self):
-		for(x in Menu.items):
-			x.printMenuItem()
-
 class MenuItem(object):
 	class MenuItemType(enum.Enum):
 		choiceInList = 1
@@ -59,6 +39,7 @@ class MenuItem(object):
 		#ERROR check: if itemType == 2 then propertyOptions list should contain 2 numbers. The first smaller than the second
 		#ERROR check: if itemType == 3 then propertyOptions list is useless and should be empty. 
 		self.printsize = 0
+		self.outerprintsize = 3
 		if(self.itemType.value == 1):
 			for x in self.options:
 				self.printsize = self.printsize + 4 + len(x)
@@ -68,7 +49,7 @@ class MenuItem(object):
 			self.printsize = 4+len(str(self.chosen))
 		if((len(self.title)+4)>self.printsize):
 			self.printsize = (len(self.title)+4)
-		self.outerprintsize = self.printsize
+		self.outerprintsize = int(self.printsize)
 			
 	#def changeValue(newValue):
 		#ERROR check: if itemType == 1 then newValue should be a number bigger than 0 but no larger than length of options
@@ -89,20 +70,52 @@ class MenuItem(object):
 					f_options1= f_options1 + self.options[i].center(4+len(self.options[i]))
 			print('|', f_options1.ljust(self.outerprintsize), '|',sep='')
 
+class Menu(object):
+	def __init__(self):
+		self.width = 0;
+		self.items = [];
+
+	def addItem(self, pTitle, pValue, iType, pOptions=[]):
+		f_menuItem = MenuItem(pTitle, pValue, iType, pOptions)
+		#if(f_menuItem.outerprintsize < self.width):
+		if(f_menuItem.outerprintsize < 5):
+			#adjusting padding on the smaller new menu item
+			f_menuItem.outerprintsize = self.width
+		#elif(f_menuItem.outerprintsize > self.width):
+		elif(f_menuItem.outerprintsize > 5):
+			#adjusting padding on all past menu items to fit this new big item
+			self.width = f_menuItem
+			for x in self.items:
+				x.outerprintsize = self.width
+		self.items.append(f_menuItem)
+		#deep copy lists if needed
+		
+		
+	def printMenu(self):
+		for x in self.items:
+			x.printMenuItem()
+
+
+
 
 print()
 
 #(self, propertyTitle, propertyValue, itemType, propertyOptions=[]):
+
+
+
+
+
 
 longest_menu_length = 0;
 property_1_title = "border color";
 property_1_values = ['black','blue','red','green'];
 property_1_chosen = 0;
 
-myBorderColor = MenuItem(property_1_title, property_1_chosen, 1, property_1_values);
+"""myBorderColor = MenuItem(property_1_title, property_1_chosen, 1, property_1_values);
 print(myBorderColor.itemType.value)
 print(myBorderColor.itemType.name)
-print()
+print()"""
 
 
 
@@ -110,11 +123,16 @@ property_2_title = "test speed";
 property_2_values = ['slow','medium','fast'];
 property_2_chosen = 1;
 
-myTextSpeed = MenuItem(property_2_title, property_2_chosen, 1, property_2_values);
+#myTextSpeed = MenuItem(property_2_title, property_2_chosen, 1, property_2_values);
 
+myMenu = Menu()
+myMenu.addItem(property_1_title, property_1_chosen, 1, property_1_values);
+myMenu.addItem(property_2_title, property_2_chosen, 1, property_2_values);
 
-myBorderColor.printMenuItem()
-myTextSpeed.printMenuItem()
+myMenu.printMenu();
+
+"""myBorderColor.printMenuItem()
+myTextSpeed.printMenuItem()"""
 
 property_5_title = "border color";
 property_5_values = [];
