@@ -121,48 +121,12 @@ class Menu(object):
 			self.items[i].printMenuItem();
 			if(i!=(len(self.items)-1)):
 				print('|', ' '*self.width, '|',sep='');
-				
 
-
-
-
-print()
-
-
-
-
-property_1_title = "border color";
-property_1_values = ['black','blue','red','green'];
-property_1_chosen = 0;
-
-property_2_title = "test speed";
-property_2_values = ['slow','medium','fast'];
-property_2_chosen = 1;
-
-property_3_title = "character name";
-property_3_values = [];
-property_3_chosen = "Dvorak the Wise";
-
-property_4_title = "Autosave every _ minutes";
-property_4_values = [1,600];
-property_4_chosen = 10;
-
-myMenu = Menu()
-myMenu.addItem(property_1_title, property_1_chosen, 1, property_1_values);
-myMenu.addItem(property_2_title, property_2_chosen, 1, property_2_values);
-myMenu.addItem(property_3_title, property_3_chosen, 3, property_3_values);
-myMenu.addItem(property_4_title, property_4_chosen, 2, property_4_values);
-
-myMenu.printMenu();
 print();
 
 shelfFile = shelve.open('myMenuData');
-shelfFile['myMenu'] = myMenu;
+myMenu = shelfFile['myMenu'];
 shelfFile.close();
 
-myMenu.changeItemValue(0, 1);
-myMenu.changeItemValue(1, 2);
-myMenu.changeItemValue(2, "Qwerty the stupid");
-myMenu.changeItemValue(3, 5);
 myMenu.printMenu();
 
