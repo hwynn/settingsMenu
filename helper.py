@@ -67,9 +67,7 @@ class MenuItem(object):
 	def printMenuItem(self):
 		if(self.itemType.value == 1):
 			print()
-			print('|',end='')
-			print(self.title.center(self.printsize),end='')
-			print('|')
+			print('|',self.title.center(self.printsize),'|',sep='')
 			print('|',end='')
 			for i in range(len(self.options)):
 				if(i==self.chosen):
