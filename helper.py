@@ -16,6 +16,26 @@ newfile2 = open('test2.txt','w');
 newfile2.write('this another file.\n777-632-0425');
 newfile2.close();"""
 
+class Menu(object):
+	def __init__(self):
+		self.width = 0;
+		self.items = [];
+
+	def addItem(self, pTitle, pValue, iType, pOptions=[]):
+		f_menuItem = MenuItem(pTitle, pValue, iType, pOptions)
+		if(f_menuItem.outerprintsize < self.width):
+			f_menuItem.outerprintsize = self.width		#adjusting padding on the smaller new menu item
+		elif(f_menuItem.outerprintsize > self.width):
+			self.width = f_menuItem.outerprintsize
+			for(x in Menu.items):						#adjusting padding on all past menu items to fit this new big item
+				Menu.items.outerprintsize = self.width
+		self.items.append(f_menuItem)
+		#deep copy lists if needed
+	
+	def printMenu(self):
+		for(x in Menu.items):
+			x.printMenuItem()
+
 class MenuItem(object):
 	class MenuItemType(enum.Enum):
 		choiceInList = 1
@@ -48,37 +68,28 @@ class MenuItem(object):
 			self.printsize = 4+len(str(self.chosen))
 		if((len(self.title)+4)>self.printsize):
 			self.printsize = (len(self.title)+4)
-		self.outerprintsize = 0
+		self.outerprintsize = self.printsize
 			
 	#def changeValue(newValue):
 		#ERROR check: if itemType == 1 then newValue should be a number bigger than 0 but no larger than length of options
 		#ERROR check: if itemType == 2 then newValue should be a number between the two numbers in options
 		#ERROR check: if itemType == 3 then newValue should be a string
-	
+
 	def printMenuItem(self):
+		f_indent = 2;
+		f_title = ((' '*f_indent)+ self.title.ljust(self.printsize-f_indent))
+		print('|',f_title.ljust(self.outerprintsize),'|',sep='')	
+	
 		if(self.itemType.value == 1):
-			f_title = self.title.center(self.printsize)
-			print()
-			print('|',f_title.center(self.outerprintsize),'|',sep='')
-			
 			f_options1 = ''
-			f_options2 = ''
-			mylist2 = [ ('('+self.options[i]+')').center(4+len(self.options[i])) if i==self.chosen else self.options[i].center(4+len(self.options[i])) for i in range(len(self.options))]
-			f_options2.join(mylist2)
 			for i in range(len(self.options)):
 				if(i==self.chosen):
 					f_options1= f_options1 + ('('+self.options[i]+')').center(4+len(self.options[i]))
 				else:
 					f_options1= f_options1 + self.options[i].center(4+len(self.options[i]))
-			print('|', f_options1, '|',sep='')
-			print('|', f_options2, '|',sep='')
+			print('|', f_options1.ljust(self.outerprintsize), '|',sep='')
 
-"""
-	class MenuItemType(enum.Enum):
-		choiceInList = 1
-		numberInRange = 2
-		storedString = 3
-"""
+
 print()
 
 #(self, propertyTitle, propertyValue, itemType, propertyOptions=[]):
@@ -91,8 +102,20 @@ property_1_chosen = 0;
 myBorderColor = MenuItem(property_1_title, property_1_chosen, 1, property_1_values);
 print(myBorderColor.itemType.value)
 print(myBorderColor.itemType.name)
-myBorderColor.printMenuItem()
+print()
 
-property_2_title = "border color";
-property_2_values = [];
-property_2_chosen = "James";
+
+
+property_2_title = "test speed";
+property_2_values = ['slow','medium','fast'];
+property_2_chosen = 1;
+
+myTextSpeed = MenuItem(property_2_title, property_2_chosen, 1, property_2_values);
+
+
+myBorderColor.printMenuItem()
+myTextSpeed.printMenuItem()
+
+property_5_title = "border color";
+property_5_values = [];
+property_5_chosen = "James";
